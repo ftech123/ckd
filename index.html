@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex flex-col min-h-screen">
+    <!-- Side Navigation (Mobile) -->
+    <ul class="sidenav bg-gray-900 text-white p-4">
+        <li><a href="login.html">Login</a></li>
+        <li><a href="register.html">Register</a></li>
+        <!-- Add more navigation items if needed -->
+    </ul>
+    <div class="content-container flex-grow">
+        <!-- Home Page Image -->
+        <div class="container mx-auto">
+            <img src="https://www.kidney.org/sites/default/files/stagesofckd_hero_mobile_v1.jpg" alt="Home Page Image" class="w-full">
+        </div>
+
+        <!-- About Section -->
+        <div class="about-section container mx-auto mt-10">
+            <h3 class="text-3xl font-bold mb-4">About Chronic Kidney Disease (CKD)</h3>
+            <div id="messageContainer" class="text-center"></div>
+            <ul class="list-disc pl-4">
+                <li>A longstanding disease of the kidneys leading to renal failure.</li>
+                <li>The kidneys filter waste and excess fluid from the blood. As kidneys fail, waste builds up.</li>
+                <li>Symptoms develop slowly and aren't specific to the disease. Some people have no symptoms at all and are diagnosed by a lab test.</li>
+                <li>Medication helps manage symptoms. In later stages, filtering the blood with a machine (dialysis) or a transplant may be required.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-blue-500 text-white py-4 mt-auto">
+        <div class="container mx-auto text-center">
+            &copy; 2024 Chronic Kidney Disease Website
+        </div>
+    </footer>
+
+    <!-- Materialize JS -->
+    <script>
+        // Initialize Side Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+        });
+    </script>
+</body>
+</html>

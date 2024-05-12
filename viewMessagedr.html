@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Messages</title>
+
+
+</head>
+<body>
+    <h1>Search Messages</h1>
+    <div id="messageContainer" style="text-align: center;"></div>
+    <div class="message-container" id="messageContainer">
+        <!-- Messages will be displayed here -->
+    </div>
+    <div class="input-container">
+        <input type="text" id="recipientUsername" class="input-box" placeholder="Recipient's Username">
+        <button onclick="searchMessages()" class="submit-button">Search Messages</button>
+    </div>
+    <div class="bottom-nav">
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+            Logout
+        </a>
+        <a href="dashboard.html">
+            <i class="fas fa-user-friends"></i>
+            Add Prescription
+        </a>
+        <a href="viewMessagedr.html">
+            <i class="fas fa-prescription"></i>
+            View Messages
+        </a>
+        <a href="contactdr.html">
+            <i class="fas fa-user"></i>
+            Contact
+        </a>
+    </div>
+
+    <!-- Firebase JavaScript SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
+    <script>
+        // Your Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCSyzT8cx_aKJ6OP_hb2tlVnkCOD2YTIIU",
+            authDomain: "ckd12345-e67d3.firebaseapp.com",
+            projectId: "ckd12345-e67d3",
+            storageBucket: "ckd12345-e67d3.appspot.com",
+            messagingSenderId: "85275653391",
+            appId: "1:85275653391:web:e8ef369b2585abb06aba7a",
+            measurementId: "G-57D04XBDM5"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the Firebase database
+        var database = firebase.database();
+
+        // Function to search and display messages for a specific recipient
+        function searchMessages() {
+            var recipientUsername = document.getElementById('recipientUsername').value;
+
+            // Clear previous messages
+            document.getElementById('messageContainer').innerHTML = '';
+
+            // Query messages for the specific recipient
+            database.ref('messages').orderByChild('recipientUsername').equalTo(recipientUsername).once('value')
+                .then(function(snapshot) {
+                    snapshot.forEach(function(childSnapshot) {
+                        var messageData = childSnapshot.val();
+                        // Display each message
+                        var messageElement = document.createElement('div');
+                        messageElement.classList.add('message');
+                        messageElement.innerHTML = `
+                            <p><strong>Sender:</strong> ${messageData.senderUsername}</p>
+                            <p><strong>Recipient:</strong> ${messageData.recipientUsername}</p>
+                            <p><strong>Message:</strong> ${messageData.message}</p>
+                        `;
+                        document.getElementById('messageContainer').appendChild(messageElement);
+                    });
+                })
+                .catch(function(error) {
+                    console.error('Error searching messages: ', error);
+                });
+        }
+    </script>
+</body>
+</html>

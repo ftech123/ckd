@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .contact-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-box {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .message-box {
+            width: calc(100% - 16px);
+            height: 100px;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+        }
+        .submit-button {
+            width: 100%;
+            padding: 10px 0;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #007bff;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+        .bottom-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .bottom-nav a i {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Page</h1>
+        <div id="messageContainer" style="text-align: center;"></div>
+        <div class="contact-form">
+            <form id="contactForm">
+                <input type="text" id="senderUsername" class="input-box" placeholder="Your Username">
+                <input type="text" id="recipientUsername" class="input-box" placeholder="Recipient's Username">
+                <textarea id="message" class="message-box" placeholder="Your Message"></textarea>
+                <button type="button" class="submit-button" onclick="sendMessage()">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="#">
+            <i class="fas fa-home"></i>
+            Home
+        </a>
+        <a href="#">
+            <i class="fas fa-user-friends"></i>
+            Contacts
+        </a>
+        <a href="#">
+            <i class="fas fa-envelope"></i>
+            Messages
+        </a>
+        <a href="#">
+            <i class="fas fa-cog"></i>
+            Settings
+        </a>
+    </div>
+
+    <!-- Firebase JavaScript SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
+    <script>
+        // Your Firebase configuration here...
+    </script>
+</body>
+</html>

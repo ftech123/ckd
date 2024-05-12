@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSV File Analysis</title>
+  <!-- Materialize CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .contact-form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .input-box {
+        width: calc(100% - 16px);
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .message-box {
+        width: calc(100% - 16px);
+        height: 100px;
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: none;
+    }
+    .submit-button {
+        width: 100%;
+        padding: 10px 0;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #007bff;
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 0;
+    }
+    .bottom-nav a {
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .bottom-nav a i {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+</style>
+</head>
+<body>
+        <!-- Navigation Bar -->
+        <!-- <nav>
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Chronic Disease</a>
+                <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="login.html">Logout</a></li>
+                </ul>
+            </div>
+        </nav> -->
+      
+        <!-- <ul class="sidenav" id="mobile-demo">
+          <br>
+          <li><a href="csv.html">View CSV</a></li>
+          <hr>
+          <li><a href="csv_ana.html">View CSV Analysis</a></li>
+          <hr>
+          <li><a href="ckd.html">Value</a></li>
+          <hr>
+          <li><a href="medicine.html">Add Medicine</a></li>
+          <hr>
+          <li><a href="view_med.html">View Medicine</a></li>
+          <hr>
+          <li><a href="login.html">Logout</a></li> -->
+          <!-- Add more navigation items if needed -->
+      </ul>
+  <div class="container"><br><br>
+    <a href="csv.html" class="waves-effect">View CSV</a><br>
+    <a href="dashboard.html" class="waves-effect">Dashboard</a>
+    <h1>CSV File Analysis</h1>
+    <div id="messageContainer" style="text-align: center;"></div>
+    <!-- File Upload Section -->
+    <div class="row">
+      <div class="file-field input-field col s12">
+        <div class="btn">
+          <span>Upload CSV</span>
+          <input type="file" id="csvFileInput">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text" placeholder="Upload a CSV file">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Analysis Results -->
+    <div class="row">
+      <div class="col s12 m6" id="analysisResults">
+        <!-- Results will be displayed here -->
+      </div>
+      <div class="col s12 m6">
+        <canvas id="analysisChart1"></canvas>
+        <canvas id="analysisChart2"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <a href="index.html">
+        <i class="fas fa-home"></i>
+        Logout
+    </a>
+    <a href="contact.html">
+        <i class="fas fa-user-friends"></i>
+        Contacts
+    </a>
+    <a href="viewMessage.html">
+        <i class="fas fa-envelope"></i>
+        Messages
+    </a>
+    <a href="ckd.html">
+        <i class="fas fa-user-friends"></i>
+        Value
+    </a>
+    <a href="csv_ana.html">
+        <i class="fas fa-user-friends"></i>
+        CSV
+    </a>
+    <a href="viewPricption.html">
+        <i class="fas fa-prescription"></i>
+        Prescriptions
+    </a>
+</div>
+  <!-- Materialize JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const csvFileInput = document.getElementById('csvFileInput');
+      const analysisResultsDiv = document.getElementById('analysisResults');
+      const analysisChartCanvas1 = document.getElementById('analysisChart1').getContext('2d');
+      const analysisChartCanvas2 = document.getElementById('analysisChart2').getContext('2d');
+      let analysisChart1, analysisChart2;
+
+      csvFileInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const csv = e.target.result;
+            const analysis = analyzeCSV(csv);
+            displayAnalysisResults(analysis);
+            displayAnalysisCharts(analysis);
+          };
+          reader.readAsText(file);
+        }
+      });
+
+      function analyzeCSV(csv) {
+        // Here you can implement your logic to analyze the CSV data
+        // For example, you can parse the CSV and calculate various statistics
+        // For demonstration purposes, let's assume a simple analysis
+        const lines = csv.split('\n');
+        const rowCount = lines.length;
+        const columnCount = lines[0].split(',').length;
+        return { rowCount, columnCount };
+      }
+
+      function displayAnalysisResults(analysis) {
+        const html = `
+          <h3>Analysis Results</h3>
+          <p><strong>Number of Rows:</strong> ${analysis.rowCount}</p>
+          <p><strong>Number of Columns:</strong> ${analysis.columnCount}</p>
+        `;
+        analysisResultsDiv.innerHTML = html;
+      }
+
+      function displayAnalysisCharts(analysis) {
+        if (analysisChart1) {
+          analysisChart1.destroy();
+        }
+        if (analysisChart2) {
+          analysisChart2.destroy();
+        }
+        analysisChart1 = new Chart(analysisChartCanvas1, {
+          type: 'line',
+          data: {
+            labels: ['CKD Posotive', 'CKD NEGATIVE'],
+            datasets: [{
+              label: 'CKD Analysis',
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1,
+              data: [900, 100]
+            }]
+          },
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            }
+          }
+        });
+
+        // Sample data for analysis chart 2
+        const chart2Data = {
+          labels: ['Stage 1', 'Stage 2', 'Stage 3', 'Stage 4', 'Stage 5'],
+          datasets: [{
+            label: 'Data 1',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            data: [10, 30, 20, 48, 40]
+          }]
+        };
+
+        analysisChart2 = new Chart(analysisChartCanvas2, {
+          type: 'line',
+          data: chart2Data,
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

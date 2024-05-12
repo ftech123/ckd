@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor's Prescription</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-4">
+        <h1 style="font-family: 'Brush Script MT', cursive;font-size: larger;text-align: center;margin-top: 5%;">Hello Doctor</h1>
+        <h1 class="text-2xl text-center mb-8">Doctor's Prescription</h1>
+        <div id="messageContainer" class="text-center mb-4"></div>
+        <div class="bg-white shadow-md rounded-md p-6 max-w-md mx-auto">
+            <select id="patientDropdown" class="input-box mb-4 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500">
+                <option>Select Patient</option>
+            </select>   
+            <input type="text" id="prescriptionMedicine" class="input-box mb-4 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500" placeholder="Prescription">
+            <input type="text" id="prescriptionInstructions" class="input-box mb-4 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500" placeholder="Instructions">
+            <div class="flex flex-col gap-2">
+                <button onclick="getdoc()" class="btn bg-green-500 hover:bg-600 text-white py-2 px-4 rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50">Load Patients</button>
+                <hr class="my-4">
+                <!-- <button onclick="save()" class="btn bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50">Save Prescription</button> -->
+                <button onclick="get()" class="btn bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50">Get Prescription</button>
+                <button onclick="update()" class="btn bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50">Update Prescription</button>
+                <!-- <button onclick="remove()" class="btn bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50">Remove Prescription</button> -->
+                <button onclick="logout()" class="btn bg-red-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50">Logout</button>
+            </div>
+        </div>
+    </div>
+     <!-- Navigation Bar -->
+     <div class="bg-gray-800 text-white py-4 text-center fixed bottom-0 w-full">
+        <a href="doctorP.html" class="px-4">
+            <i class="fas fa-user-friends"></i>
+            Prescription</a>
+        <a href="viewMessagedr.html" class="px-4">
+            <i class="fas fa-prescription"></i>
+            View Messages</a>
+        <a href="contactdr.html" class="px-4">
+            <i class="fas fa-user"></i>
+            Contact</a>
+        <a href="avalability.html" class="px-4">
+            <i class="fas fa-calendar"></i>
+            Availability</a>
+    </div>
+
+    <!-- Firebase JavaScript SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="doctorP.js"></script>
+</body>
+</html>

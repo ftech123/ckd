@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Prescription</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .contact-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-box {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .message-box {
+            width: calc(100% - 16px);
+            height: 100px;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+        }
+        .submit-button {
+            width: 100%;
+            padding: 10px 0;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #007bff;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+        .bottom-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .bottom-nav a i {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>View Prescription</h1>
+    <div id="messageContainer" style="text-align: center;"></div>
+    <div class="prescription">
+        <input type="text" id="username" class="input-box" placeholder="Enter Username">
+        <button onclick="getPrescription()" class="submit-button">Get Prescription</button>
+        <div id="prescriptionResult"></div>
+    </div>
+    <div class="bottom-nav">
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+            Logout
+        </a>
+        <a href="contact.html">
+            <i class="fas fa-user-friends"></i>
+            Contacts
+        </a>
+        <a href="viewMessage.html">
+            <i class="fas fa-envelope"></i>
+            Messages
+        </a>
+        <a href="ckd.html">
+            <i class="fas fa-user-friends"></i>
+            Value
+        </a>
+        <a href="csv_ana.html">
+            <i class="fas fa-user-friends"></i>
+            CSV
+        </a>
+        <a href="viewPricption.html">
+            <i class="fas fa-prescription"></i>
+            Prescriptions
+        </a>
+    </div>
+    <!-- Firebase JavaScript SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCSyzT8cx_aKJ6OP_hb2tlVnkCOD2YTIIU",
+            authDomain: "ckd12345-e67d3.firebaseapp.com",
+            projectId: "ckd12345-e67d3",
+            storageBucket: "ckd12345-e67d3.appspot.com",
+            messagingSenderId: "85275653391",
+            appId: "1:85275653391:web:e8ef369b2585abb06aba7a",
+            measurementId: "G-57D04XBDM5"
+        };
+        // Initialize Firebase
+        try {
+            firebase.initializeApp(firebaseConfig);
+        } catch (err) {
+            console.error('Error initializing Firebase: ', err);
+        }
+
+        function getPrescription() {
+            var username = document.getElementById('username').value;
+            if (!username) {
+                alert('Please enter a username.');
+                return;
+            }
+            var database = firebase.database();
+            database.ref('prescriptions/' + username).once('value').then(function(snapshot) {
+                var prescription = snapshot.val();
+                if (prescription) {
+                    var prescriptionHTML = `
+                        <p><strong>Patient Name:</strong> ${prescription.patientName}</p>
+                        <p><strong>Patient Age:</strong> ${prescription.patientAge}</p>
+                        <p><strong>Prescription Days:</strong> ${prescription.prescriptionDay}</p>
+                        <p><strong>Medicine:</strong> ${prescription.prescriptionMedicine}</p>
+                        <p><strong>Dosage:</strong> ${prescription.prescriptionDosage}</p>
+                        <p><strong>Instructions:</strong> ${prescription.prescriptionInstructions}</p>
+                    `;
+                    document.getElementById('prescriptionResult').innerHTML = prescriptionHTML;
+                } else {
+                    document.getElementById('prescriptionResult').innerHTML = 'Prescription not found for the provided username.';
+                }
+            }).catch(function(error) {
+                console.error('Error getting prescription: ', error);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chronic Kidney Disease Detector</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    input[type="file"] {
+        margin-bottom: 10px;
+    }
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
+</head>
+<body>
+    <h2>Chronic Kidney Disease Detector</h2>
+    <div id="messageContainer" style="text-align: center;"></div>
+    <label for="csvFile">Select CSV File:</label>
+    <input type="file" id="csvFile">
+    <button type="button" onclick="detectCKD()">Detect CKD</button>
+
+    <div id="result"></div>
+
+    <script>
+        function detectCKD() {
+            var fileInput = document.getElementById('csvFile');
+            var file = fileInput.files[0];
+            
+            if (file) {
+                var reader = new FileReader();
+                reader.readAsText(file);
+                reader.onload = function(event) {
+                    var csvData = event.target.result.trim();
+                    
+                    // Parse CSV data
+                    var rows = csvData.split('\n');
+                    var parameters = {};
+                    for (var i = 0; i < rows.length; i++) {
+                        var columns = rows[i].split(',');
+                        var paramName = columns[0].trim();
+                        var paramValue = parseFloat(columns[1].trim());
+                        parameters[paramName] = paramValue;
+                    }
+
+                    // Extract parameter values
+                    var bp = parameters['bp'];
+                    var sg = parameters['sg'];
+                    var al = parameters['al'];
+                    var su = parameters['su'];
+                    var rbc = parameters['rbc'];
+                    var pc = parameters['pc'];
+                    var pcc = parameters['pcc'];
+                    var ba = parameters['ba'];
+                    var bgr = parameters['bgr'];
+                    var bu = parameters['bu'];
+                    var sod = parameters['sod'];
+                    var dm = parameters['dm'];
+                    var ane = parameters['ane'];
+
+                    // Implement detection logic here based on parameter values
+                    var result = "";
+                    if (bp > 140 && sg < 1.01 && al > 30 && rbc > 3.5 && pc == 1 && pcc == 0 && ba == 0 && bgr > 200 && bu > 20 && sod > 135 && dm == 1 && ane == 0) {
+                        result = "You might be suffering from Chronic Kidney Disease. Please consult a doctor.";
+                    } else {
+                        result = "You are not likely suffering from Chronic Kidney Disease.";
+                    }
+
+                    // Update result
+                    document.getElementById('result').innerHTML = result;
+                };
+            } else {
+                alert("Please select a CSV file.");
+            }
+        }
+    </script>
+</body>
+</html>

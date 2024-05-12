@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chronic Kidney Disease Detector</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .contact-form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .input-box {
+        width: calc(100% - 16px);
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .message-box {
+        width: calc(100% - 16px);
+        height: 100px;
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: none;
+    }
+    .submit-button {
+        width: 100%;
+        padding: 10px 0;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #007bff;
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 0;
+    }
+    .bottom-nav a {
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .bottom-nav a i {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+    <h2>Chronic Kidney Disease Detector</h2>
+    <button  onclick="logout()" >Logout</button>
+    <div id="messageContainer" style="text-align: center;"></div>
+    <form id="ckdForm" class="contact-form">
+        <input type="text" id="bp" name="bp" placeholder="Enter Blood Pressure (BP) value..." class="input-box" oninput="validateInput(this, 50, 200)">
+        <select id="urine_color" name="urine_color" class="input-box" placeholder="Select Urine Color...">
+            <option value="pale">Pale yellow</option>
+            <option value="dark">Dark yellow</option>
+            <option value="brown">Brown</option>
+            <option value="colorless">No color</option>
+        </select>
+
+        <select id="al" name="al" class="input-box" placeholder="Select Albumin (AL): value...">
+            <option value="normal">Normal</option>
+            <option value="low">Low</option>
+            <option value="moderate">Moderate</option>
+            <option value="high">High</option>
+        </select>
+
+        <select id="su" name="su" class="input-box" placeholder="Select Sugar (SU): value...">
+            <option value="normal">Normal</option>
+            <option value="low">Low</option>
+            <option value="moderate">Moderate</option>
+            <option value="high">High</option>
+        </select>
+
+        <select id="bgr" name="bgr" class="input-box" placeholder="Select Blood Glucose Random (BGR): value...">
+            <option value="normal">Normal</option>
+            <option value="low">Low</option>
+            <option value="moderate">Moderate</option>
+            <option value="high">High</option>
+        </select>
+
+        <select id="bu" name="bu" class="input-box" placeholder="Select Blood Urea (BU): value..." class="input-box">
+            <option value="normal">Normal</option>
+            <option value="low">Low</option>
+            <option value="moderate">Moderate</option>
+            <option value="high">High</option>
+        </select>
+
+        <select id="sod" name="sod" class="input-box" placeholder="Select Sodium (SOD): value...">
+            <option value="normal">Normal</option>
+            <option value="low">Low</option>
+            <option value="moderate">Moderate</option>
+            <option value="high">High</option>
+        </select>
+
+        <button type="button" onclick="detectCKD()">Detect CKD</button>
+    </form>
+
+    <div id="result"></div>
+    </div>
+    <br><br><br><br>
+    <div class="bottom-nav">
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+            Home
+        </a>
+        <a href="contact.html">
+            <i class="fas fa-user-friends"></i>
+            Contacts
+        </a>
+        <a href="viewMessage.html">
+            <i class="fas fa-envelope"></i>
+            Messages
+        </a>
+        <a href="ckd.html">
+            <i class="fas fa-user-friends"></i>
+            Value
+        </a>
+        <a href="csv_ana.html">
+            <i class="fas fa-user-friends"></i>
+            CSV
+        </a>
+        <a href="viewPricption.html">
+            <i class="fas fa-prescription"></i>
+            Prescriptions
+        </a>
+    </div>
+    <script>
+        function detectCKD() {
+            // Get input values
+            var bp = parseFloat(document.getElementById('bp').value);
+            var urine_color = document.getElementById('urine_color').value;
+            var al = document.getElementById('al').value;
+            var su = document.getElementById('su').value;
+            var bgr = document.getElementById('bgr').value;
+            var bu = document.getElementById('bu').value;
+            var sod = document.getElementById('sod').value;
+
+            // Blood Pressure (BP) ranges
+            var bpCategory;
+            if (bp >= 120 && urine_color == "pale" && al == "low" && su == "low" && bgr == "low" && bu == "low" && sod == "low") {
+                // Early detection of Chronic Kidney Disease
+                bpCategory = "Early detection of Chronic Kidney Disease";
+                foodRecommendation = "Follow a low-sodium, low-protein diet. Increase intake of fruits and vegetables.";
+                medicineRecommendation = "Consult a healthcare provider for appropriate medications to manage blood pressure.";
+                exerciseRecommendation = "Engage in regular physical activity like walking, swimming, or cycling.";
+                doctorRecommendation = "Dr Patil: KLE Belgaum - 8520147963 - 10:00am - 06:00pm";
+            } else if (bp > 130 && bp <= 120 && urine_color == "colorless" && al == "moderate" && su == "moderate" && bgr == "moderate" && bu == "moderate" && sod == "moderate") {
+                // Stage 1
+                bpCategory = "Stage 1 Mild Kidney Damage : Kidney works as well as normal";
+                foodRecommendation = "Limit salt intake. Include more whole grains, fruits, and vegetables in your diet.";
+                medicineRecommendation = "Medication may be prescribed by a doctor to lower blood pressure if lifestyle changes are insufficient.";
+                exerciseRecommendation = "Aim for at least 30 minutes of moderate-intensity exercise most days of the week.";
+                doctorRecommendation = "Dr Patil: KLE Belgaum - 8520147963 - 10:00am - 06:00pm";
+
+            } else if (bp > 140 && bp <= 130 && urine_color == "colorless" && al == "moderate" && su == "moderate" && bgr == "moderate" && bu == "moderate" && sod == "moderate") {
+                // Stage 2
+                bpCategory = "Stage 2 Mild Kidney Damage : Kidney Still Works well";
+                foodRecommendation = "Adopt the DASH (Dietary Approaches to Stop Hypertension) diet. Reduce saturated fats and cholesterol.";
+                medicineRecommendation = "Medications are often required to manage blood pressure effectively. Consult a healthcare provider.";
+                exerciseRecommendation = "Incorporate aerobic exercise, such as brisk walking or jogging, for at least 30 minutes a day.";
+                doctorRecommendation = "Dr Patil: KLE Belgaum - 8520147963 - 10:00am - 06:00pm";
+
+            } else if (bp > 150 && bp <= 140 && urine_color == "colorless" && al == "moderate" && su == "moderate" && bgr == "moderate" && bu == "moderate" && sod == "moderate") {
+                // Stage 3
+                bpCategory = "Stage 3 Mild to Moderate Kidney Damage";
+                foodRecommendation = "Focus on a heart-healthy diet, including lean proteins, whole grains, and plenty of fruits and vegetables.";
+                medicineRecommendation = "Medications are essential for controlling blood pressure at this stage. Regular monitoring is crucial.";
+                exerciseRecommendation = "Engage in moderate aerobic activity for at least 30 minutes most days of the week.";
+                doctorRecommendation = "Dr Patil: KLE Belgaum - 8520147963 - 10:00am - 06:00pm";
+
+            } else if (bp > 160 && bp <= 150 && urine_color == "dark" && al == "moderate" && su == "moderate" && bgr == "moderate" && bu == "moderate" && sod == "moderate") {
+                // Stage 4
+                bpCategory = "Stage 4 Severe Kidney Damage - Kidneys are close to not working properly";
+                foodRecommendation = "Limit sodium intake to less than 1,500 mg per day. Increase potassium-rich foods like bananas and sweet potatoes.";
+                medicineRecommendation = "Multiple medications may be required to lower blood pressure effectively. Consult a specialist.";
+                exerciseRecommendation = "Engage in regular aerobic exercise, such as walking or cycling, for at least 30 minutes most days of the week.";
+                doctorRecommendation = "Dr Patil: KLE Belgaum - 8520147963 - 10:00am - 06:00pm";
+
+            } else if (bp > 180 && bp <= 160 && urine_color == "brown" && al == "high" && su == "high" && bgr == "high" && bu == "high" && sod == "high") {
+                // Stage 5
+                bpCategory = "Stage 5 Most Severe Kidney Damage";
+                foodRecommendation = "Follow a heart-healthy diet low in sodium and saturated fats. Monitor fluid intake.";
+                medicineRecommendation = "Aggressive treatment with multiple medications may be necessary. Seek immediate medical attention.";
+                exerciseRecommendation = "Low-impact exercises like swimming or gentle yoga may be suitable. Consult a healthcare provider.";
+                doctorRecommendation = "Dr Patil: KLE Belgaum - 8520147963 - 10:00am - 06:00pm";
+
+            } else if (bp > 50 && bp < 120 && urine_color == "pale" && al == "normal" && su == "normal" && bgr == "normal" && bu == "normal" && sod == "normal") {
+                // Stage 5
+                bpCategory = " Normal Patient.";
+                foodRecommendation = "Consult a healthcare provider for personalized recommendations.";
+                medicineRecommendation = "";
+                exerciseRecommendation = "Engage in physical activity suitable for your health condition.";
+                doctorRecommendation = "";
+                
+            } else {
+                bpCategory = " Normal Patient.";
+                foodRecommendation = "Consult a healthcare provider for personalized recommendations.";
+                medicineRecommendation = "";
+                exerciseRecommendation = "Engage in physical activity suitable for your health condition.";
+                doctorRecommendation = "";
+            }
+
+
+            // Finally, update the result based on the detection
+            var result = "Blood Pressure: " + bpCategory + "<br>";
+            result += "Food Recommendation: " + foodRecommendation + "<br>";
+            result += "Medicine Recommendation: " + medicineRecommendation + "<br>";
+            result += "Exercise Recommendation: " + exerciseRecommendation + "<br>";
+            result += "Doctor Recommendation: " + doctorRecommendation + "<br>";
+            document.getElementById('result').innerHTML = result;
+        }
+    </script>
+    <script src="index.js"></script>
+</body>
+</html>
